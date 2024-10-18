@@ -6,7 +6,7 @@
 /*   By: valerio <valerio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:48:46 by valerio           #+#    #+#             */
-/*   Updated: 2024/10/17 22:48:47 by valerio          ###   ########.fr       */
+/*   Updated: 2024/10/18 17:37:15 by valerio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,11 @@ void draw_mandelbrot(t_data *data, int max_iter)
 	float	*x = linspace(data->xc - data->semiax, data->xc + data->semiax, WIDTH);
 	float	*y = linspace(data->yc - data->semiax, data->yc + data->semiax, HEIGHT);
 
+	float	*r = linspace(205, 205, ITER);
+	float	*g = linspace(65, 65, ITER);
+	float	*b = linspace(75, 205, ITER);
+	
 	int max = 0;
-	int rec = ITER / 3;
-	int c[3];
 
 	for (int i = 0; i < HEIGHT; i++)
 	{
@@ -54,31 +56,15 @@ void draw_mandelbrot(t_data *data, int max_iter)
 		{
 			iter = count_iterations(0, 0, x[j], y[i], max_iter);
 			//iter = count_iterations(x[j], y[i], -0.7, 0, max_iter); //Julia set
-			if (iter <= ITER / 3)
-			{
-				c[0] = iter;
-				c[1] = 0;
-				c[2] = 0;
-			}
-			else if (iter > ITER / 3 && iter <= (ITER / 3) * 2)
-			{
-				c[0] = ITER / 3;
-				c[1] = iter - ITER / 3;
-				c[2] = 0;
-			}
-			else
-			{
-				c[0] = ITER / 3;
-				c[1] = ITER / 3;
-				c[2] = iter - 2 * ITER / 3;
-			}
 			//color = encode_rgb(iter, iter, iter);
-			color = encode_rgb(ITER / 3 -  c[0], ITER / 3-c[1], ITER / 3-c[2]);
+			//color = encode_rgb(r[iter], g[iter], b[iter]);
+			color = encode_rgb(data->palette[0][iter], data->palette[1][iter], data->palette[2][iter]);
 			my_pixel_put(&data->img, j, i, color);
 			//printf("%d	", iter);
 		}
 		//printf("\n");
 	}
+	//anti_aliasing(&data->img); //optional (increase computation)
 	mlx_put_image_to_window(data->mlx, data->win, data->img.img, 0, 0);
 	free(x);
 	free(y);

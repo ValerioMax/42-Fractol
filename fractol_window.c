@@ -6,7 +6,7 @@
 /*   By: valerio <valerio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:48:37 by valerio           #+#    #+#             */
-/*   Updated: 2024/10/17 22:48:38 by valerio          ###   ########.fr       */
+/*   Updated: 2024/10/18 16:50:56 by valerio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@ void fractol_init_window()
 	data.img.pixels = mlx_get_data_addr(data.img.img, &data.img.bpp, &data.img.line_len, &data.img.endian);
 	data.semiax = 3;
 	data.k = 0.5;
+	data.xc = 0;
+	data.yc = 0;
+
+	float	colors[][3] = {{25, 5, 55}, {140, 110, 85}, {60, 160, 130}, {55, 85, 230}, {230, 190, 55}, {255, 0, 0}}; // scrivere una funzione colors_init() che li alloca dinamicamente
+	data.palette = get_palette(colors, 6);
 
 	draw_mandelbrot(&data, ITER);
 
