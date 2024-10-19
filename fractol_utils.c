@@ -6,7 +6,7 @@
 /*   By: valerio <valerio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:48:42 by valerio           #+#    #+#             */
-/*   Updated: 2024/10/18 17:37:28 by valerio          ###   ########.fr       */
+/*   Updated: 2024/10/19 12:07:24 by valerio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void my_pixel_put(t_img *img, int x, int y, int color)
 	*((unsigned int *)(img->pixels + offset)) = color;
 }
 
-float *linspace(float start, float end, int num)
+double *linspace(double start, double end, int num)
 {
-	float	*v = malloc(num * sizeof(float));
+	double	*v = malloc(num * sizeof(double));
 
 	if (start < end)
 		for (int i = 0; i < num; i++)
@@ -46,22 +46,22 @@ int map(int value, int s0, int e0, int s1, int e1)
 	return ((e1 - s1) / (e0 - s0)) * value;
 }
 
-void concat(float *src, float *dst, int i, int len)
+void concat(double *src, double *dst, int i, int len)
 {
 	for (int k = 0; k < len; k++)
 		dst[k + i] = src[k];
 }
 
-float **get_palette(float colors[][3], int num_colors) // da rivedere
+double **get_palette(double colors[][3], int num_colors) // da rivedere
 {
-	float **palette = malloc(sizeof(float*) * 3);
-	palette[0] = malloc(ITER * sizeof(float));
-	palette[1] = malloc(ITER * sizeof(float));
-	palette[2] = malloc(ITER * sizeof(float));
+	double **palette = malloc(sizeof(double*) * 3);
+	palette[0] = malloc(ITER * sizeof(double));
+	palette[1] = malloc(ITER * sizeof(double));
+	palette[2] = malloc(ITER * sizeof(double));
 	int len = ITER / num_colors;
-	float *r1;
-	float *g1;
-	float *b1;
+	double *r1;
+	double *g1;
+	double *b1;
 	for (int i = 0; i < num_colors - 1; i++)
 	{
 		r1 = linspace(colors[i][0], colors[i + 1][0], len);

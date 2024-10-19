@@ -6,7 +6,7 @@
 /*   By: valerio <valerio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:48:46 by valerio           #+#    #+#             */
-/*   Updated: 2024/10/18 17:37:15 by valerio          ###   ########.fr       */
+/*   Updated: 2024/10/19 12:09:35 by valerio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@
 //#define Y_MIN	-1.4
 //#define Y_MAX	1.4
 
-int count_iterations(float zx, float zy, float cx, float cy, int max_iter)
+int count_iterations(double zx, double zy, double cx, double cy, int max_iter)
 {
-	float	re;
-	float	im;
+	double	re;
+	double	im;
 
 	for (int i = 0; i < max_iter; i++)
 	{
@@ -41,12 +41,12 @@ void draw_mandelbrot(t_data *data, int max_iter)
 	//float	*x = linspace(X_MIN - data->k, X_MAX - data->k, WIDTH);
 	//float	*y = linspace(Y_MIN - data->w, Y_MAX - data->w, HEIGHT);
 
-	float	*x = linspace(data->xc - data->semiax, data->xc + data->semiax, WIDTH);
-	float	*y = linspace(data->yc - data->semiax, data->yc + data->semiax, HEIGHT);
+	double	*x = linspace(data->xc - data->semiax, data->xc + data->semiax, WIDTH);
+	double	*y = linspace(data->yc - data->semiax, data->yc + data->semiax, HEIGHT);
 
-	float	*r = linspace(205, 205, ITER);
-	float	*g = linspace(65, 65, ITER);
-	float	*b = linspace(75, 205, ITER);
+	double	*r = linspace(205, 205, ITER);
+	double	*g = linspace(65, 65, ITER);
+	double	*b = linspace(75, 205, ITER);
 	
 	int max = 0;
 
@@ -55,7 +55,7 @@ void draw_mandelbrot(t_data *data, int max_iter)
 		for (int j = 0; j < WIDTH; j++)
 		{
 			iter = count_iterations(0, 0, x[j], y[i], max_iter);
-			//iter = count_iterations(x[j], y[i], -0.7, 0, max_iter); //Julia set
+			//iter = count_iterations(x[j], y[i], -0.7269, 0.1889, max_iter); //Julia set
 			//color = encode_rgb(iter, iter, iter);
 			//color = encode_rgb(r[iter], g[iter], b[iter]);
 			color = encode_rgb(data->palette[0][iter], data->palette[1][iter], data->palette[2][iter]);
