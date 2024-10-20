@@ -21,7 +21,7 @@
 
 # define HEIGHT	1000
 # define WIDTH	HEIGHT		//(HEIGHT * (((X_MAX - X_MIN) / (Y_MAX - Y_MIN))))
-# define ITER	255
+# define ITER	150
 
 typedef struct s_img
 {
@@ -37,8 +37,8 @@ typedef struct s_data
 	void	*mlx;
 	void	*win;
 	t_img	img;
-	double	xc; //per zoom (da rivedere)
-	double	yc; //per zoom (da rivedere)
+	double	xc;
+	double	yc;
 	double	semiax; // per zoom (da rivedere)
 	double	k;
 	double	**palette;
@@ -53,6 +53,7 @@ int 	map(int value, int s0, int e0, int s1, int e1);
 double	**get_palette(double colors[][3], int num_colors);
 void	anti_aliasing(t_img *img); //da vedere
 
+int		mouse_handler(int button, int x, int y, t_data *param);
 int		key_handler(int keysym, t_data *data);
 
 void 	draw_mandelbrot(t_data *data, int max_iter);

@@ -38,8 +38,6 @@ void draw_mandelbrot(t_data *data, int max_iter)
 {
 	int		color;
 	int		iter;
-	//float	*x = linspace(X_MIN - data->k, X_MAX - data->k, WIDTH);
-	//float	*y = linspace(Y_MIN - data->w, Y_MAX - data->w, HEIGHT);
 
 	double	*x = linspace(data->xc - data->semiax, data->xc + data->semiax, WIDTH);
 	double	*y = linspace(data->yc - data->semiax, data->yc + data->semiax, HEIGHT);

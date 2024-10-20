@@ -25,11 +25,13 @@ void fractol_init_window()
 	data.xc = 0;
 	data.yc = 0;
 
-	double	colors[][3] = {{25, 5, 55}, {140, 110, 85}, {60, 160, 130}, {55, 85, 230}, {230, 190, 55}, {255, 0, 0}}; // scrivere una funzione colors_init() che li alloca dinamicamente
-	data.palette = get_palette(colors, 6);
+	double	colors1[][3] = {	{100, 30, 97}, {0, 0, 255}, {230, 200, 80}, {255, 0, 0}}; // scrivere una funzione colors_init() che li alloca dinamicamente
+	double colors[][3] = {	{255, 255, 255}, {255, 0, 0}};
+	data.palette = get_palette(colors, 2);
 
 	draw_mandelbrot(&data, ITER);
 
+	mlx_mouse_hook(data.win, mouse_handler, &data);
 	mlx_key_hook(data.win, key_handler, &data);	//in questo modo viene fatto il draw solo quando c'è un evento (keyPressed)
 												//ma avrei potuto usare mlx_loop_hook per fare il draw in modo continuo
 	mlx_loop(data.mlx);

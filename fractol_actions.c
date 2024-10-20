@@ -26,10 +26,12 @@ int	key_handler(int keysym, t_data *data)
 		data->semiax *= 1.25;
 		data->k *= 1.25;	//scala automaticamente lo spostamento
 	}
+
 	if (keysym == XK_k)
 		data->k *= 1.25;
 	if (keysym == XK_l)
 		data->k *= 0.75;
+
 	if (keysym == XK_w)
 		data->yc -= data->k;
 	if (keysym == XK_a)
@@ -42,4 +44,18 @@ int	key_handler(int keysym, t_data *data)
 	//printf("[%.2f, %.2f] %.4f\n", data->xc, data->yc, data->semiax);
 	draw_mandelbrot(data, ITER);
 	return 0;
+}
+
+int mouse_handler(int button, int x, int y, t_data *data)
+{
+	double	*re = linspace(data->xc - data->semiax, data->xc + data->semiax, WIDTH);
+	double	*im = linspace(data->yc - data->semiax, data->yc + data->semiax, HEIGHT);
+
+	data->xc = re[x];
+	data->yc = im[y];
+	data->semiax *= 0.75;
+	data->k *= 0.75;
+    //printf("%d,%d   %d,%d\n", x, y,xc,);
+	draw_mandelbrot(data, ITER);
+    return 0;
 }
