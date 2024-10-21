@@ -6,7 +6,7 @@
 /*   By: valerio <valerio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:48:42 by valerio           #+#    #+#             */
-/*   Updated: 2024/10/19 12:07:24 by valerio          ###   ########.fr       */
+/*   Updated: 2024/10/21 21:47:02 by valerio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,6 @@ double *linspace(double start, double end, int num)
 	return v;
 }
 
-int map(int value, int s0, int e0, int s1, int e1)
-{
-	return ((e1 - s1) / (e0 - s0)) * value;
-}
-
 void concat(double *src, double *dst, int i, int len)
 {
 	for (int k = 0; k < len; k++)
@@ -58,7 +53,7 @@ double **get_palette(double colors[][3], int num_colors) // da rivedere
 	palette[0] = malloc(ITER * sizeof(double));
 	palette[1] = malloc(ITER * sizeof(double));
 	palette[2] = malloc(ITER * sizeof(double));
-	int len = ITER / num_colors;
+	int len = ITER / (num_colors - 1);
 	double *r1;
 	double *g1;
 	double *b1;
@@ -106,4 +101,69 @@ void anti_aliasing(t_img *img) // DA RIVEDERE
 			offset = (i * img->line_len) + (j * (img->bpp / 8));
 			*(img->pixels + offset) = *(pixels2 + offset);
 		 }
+}
+
+static char	*ft_reverse(char *s)
+{
+	int	i;
+	int	len;
+	char	temp;
+
+	len = strlen((const char *) s); // USARE FT_STRLEN DI LIBFT!!
+	i = 0;
+	while (i < len / 2)
+	{
+		temp = s[i];
+		s[i] = s[len - i - 1];
+		s[len - i - 1] = temp;
+		i++;
+	}
+	return (s);
+}
+
+static long	ft_numlen(long n, int len)
+{
+	if (n < 0)
+		return (ft_numlen(n * -1, len + 1));
+	else if (n < 10)
+		return (len);
+	else
+		return (ft_numlen(n / 10, len + 1));
+}
+
+static char	*ft_aux(long int n, char *s, int i)
+{
+	if (n < 10)
+	{
+		s[i] = n + '0';
+		return (s);
+	}
+	else
+	{
+		s[i] = n % 10 + '0';
+		return (ft_aux(n / 10, s, i + 1));
+	}
+}
+
+char	*ft_itoa(int n) // DA AGGIUNGERE CON LIBFT INVECE CHE METTERLO QUI
+{
+	char	*s;
+	long	numlen;
+	long	long_n;
+
+	long_n = (long int) n;
+	numlen = ft_numlen(long_n, 1);
+	s = (char *) malloc((numlen + 1) * sizeof(char));
+	if (!s)
+		return (NULL);
+	if (long_n < 0)
+	{
+		long_n *= -1;
+		s[numlen - 1] = '-';
+		s[numlen] = '\0';
+		s = ft_reverse(ft_aux(long_n, s, 0));
+		return (s);
+	}
+	s[numlen] = '\0';
+	return (ft_reverse(ft_aux(long_n, s, 0)));
 }

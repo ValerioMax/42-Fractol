@@ -6,7 +6,7 @@
 /*   By: valerio <valerio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:48:48 by valerio           #+#    #+#             */
-/*   Updated: 2024/10/17 22:48:49 by valerio          ###   ########.fr       */
+/*   Updated: 2024/10/21 21:45:34 by valerio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,32 @@ int	key_handler(int keysym, t_data *data)
 	return 0;
 }
 
-int mouse_handler(int button, int x, int y, t_data *data)
+int mouse_click_handler(int button, int x, int y, t_data *data)
 {
-	double	*re = linspace(data->xc - data->semiax, data->xc + data->semiax, WIDTH);
-	double	*im = linspace(data->yc - data->semiax, data->yc + data->semiax, HEIGHT);
+		double	*re = linspace(data->xc - data->semiax, data->xc + data->semiax, WIDTH);
+		double	*im = linspace(data->yc - data->semiax, data->yc + data->semiax, HEIGHT);
 
-	data->xc = re[x];
-	data->yc = im[y];
-	data->semiax *= 0.75;
-	data->k *= 0.75;
-    //printf("%d,%d   %d,%d\n", x, y,xc,);
-	draw_mandelbrot(data, ITER);
-    return 0;
+	if (button == 1) // tasto sinistro
+	{
+		data->xc = re[x];
+		data->yc = im[y];
+		
+		data->semiax *= 0.75;
+		data->k *= 0.75;
+		//printf("%d,%d   %d,%d\n", x, y,xc,);
+		draw_mandelbrot(data, ITER);
+	}
+	if (button == 3) // tasto destro
+	{
+		double cx = re[x];
+		double cy = im[y];
+		char *s = ft_itoa(count_iterations(0, 0, cx, cy, ITER));
+		draw_mandelbrot(data, ITER);
+		mlx_string_put(data->mlx, data->win, 30, 30, 0x62F652, s);
+		free(s);
+	}
+	
+	return 0;
 }
+
+
