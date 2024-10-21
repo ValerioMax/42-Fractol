@@ -6,4 +6,5 @@
 -In base a dove si clicca sullo schermo far vedere l'insieme di Julia corrispondente
 -Mettere da linea di comando (quando si esegue il programma) il tipo di frattale da renderizzare (es: Mandelbrot, Julia, Newton, ...)
 -Eliminare leak di memoria
+-Migliorare Makefile e mettere LIBFT
 -Norma
