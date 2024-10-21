@@ -1,0 +1,9 @@
+-Aggiungere zoom con rotella
+-Rendere più efficiente
+-Fare zoom con dissolvenza (che sembra entrare nell'immagine) (farlo lento se ci mette tanto a caricare)
+-Aggiungere HUD con lista comandi e info varie
+-Mettere impostazione per cambiare colore da linea di comando
+-In base a dove si clicca sullo schermo far vedere l'insieme di Julia corrispondente
+-Mettere da linea di comando (quando si esegue il programma) il tipo di frattale da renderizzare (es: Mandelbrot, Julia, Newton, ...)
+-Eliminare leak di memoria
+-Norma
