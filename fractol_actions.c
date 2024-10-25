@@ -6,7 +6,7 @@
 /*   By: valerio <valerio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:48:48 by valerio           #+#    #+#             */
-/*   Updated: 2024/10/21 21:45:34 by valerio          ###   ########.fr       */
+/*   Updated: 2024/10/25 15:19:36 by valerio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,33 +41,57 @@ int	key_handler(int keysym, t_data *data)
 	if (keysym == XK_d)
 		data->xc += data->k;
 
-	//printf("[%.2f, %.2f] %.4f\n", data->xc, data->yc, data->semiax);
-	draw_mandelbrot(data, ITER);
+	get_mandelbrot(data, ITER);
+	mlx_put_image_to_window(data->mlx, data->win, data->img_new.img, 0, 0);
 	return 0;
 }
 
 int mouse_click_handler(int button, int x, int y, t_data *data)
 {
-		double	*re = linspace(data->xc - data->semiax, data->xc + data->semiax, WIDTH);
-		double	*im = linspace(data->yc - data->semiax, data->yc + data->semiax, HEIGHT);
-
-	if (button == 1) // tasto sinistro
+	//tasto sx: 1, tasto dx: 3, rotella in alto: 4, rotella in basso: 5, rotella click: 2
+	if (button == 1)
 	{
-		data->xc = re[x];
-		data->yc = im[y];
-		
+		data->xc = data->xmin + ((data->xmax - data->xmin) / WIDTH) * x;
+		data->yc = data->ymin + ((data->ymax - data->ymin) / HEIGHT) * y;
+		//data->semiax *= 0.9;
+		//data->k *= 0.75;
+		data->alpha = 0;
+		get_mandelbrot(data, ITER);
+		//mlx_put_image_to_window(data->mlx, data->win, data->img_new.img, 0, 0); //se si fa il blending commentarlo
+	}
+	if (button == 3)
+	{
+		data->xc = data->xmin + ((data->xmax - data->xmin) / WIDTH) * x;
+		data->yc = data->ymin + ((data->ymax - data->ymin) / HEIGHT) * y;
 		data->semiax *= 0.75;
 		data->k *= 0.75;
-		//printf("%d,%d   %d,%d\n", x, y,xc,);
-		draw_mandelbrot(data, ITER);
+		data->alpha = 0;
+		get_mandelbrot(data, ITER);
+		//mlx_put_image_to_window(data->mlx, data->win, data->img_new.img, 0, 0); //se si fa il blending commentarlo
 	}
-	if (button == 3) // tasto destro
+	if (button == 4)
 	{
-		double cx = re[x];
-		double cy = im[y];
+		data->semiax *= 0.95;
+		data->k *= 0.75;
+		data->alpha = 0;
+		get_mandelbrot(data, ITER);
+		//mlx_put_image_to_window(data->mlx, data->win, data->img_new.img, 0, 0); //se si fa il blending commentarlo
+	}
+	if (button == 5)
+	{
+		data->semiax *= 1.25;
+		data->k *= 1.25;
+		data->alpha = 0;
+		get_mandelbrot(data, ITER);
+	}
+	if (button == 2) // tasto destro
+	{
+		double cx = data->xmin + ((data->xmax - data->xmin) / WIDTH) * x;
+		double cy = data->ymin + ((data->ymax - data->ymin) / HEIGHT) * y;
 		char *s = ft_itoa(count_iterations(0, 0, cx, cy, ITER));
-		draw_mandelbrot(data, ITER);
-		mlx_string_put(data->mlx, data->win, 30, 30, 0x62F652, s);
+		get_mandelbrot(data, ITER);
+		mlx_put_image_to_window(data->mlx, data->win, data->img_new.img, 0, 0);
+		mlx_string_put(data->mlx, data->win, 30, 30, 0xffffff, s);
 		free(s);
 	}
 	

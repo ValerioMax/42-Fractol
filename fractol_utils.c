@@ -6,15 +6,31 @@
 /*   By: valerio <valerio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:48:42 by valerio           #+#    #+#             */
-/*   Updated: 2024/10/21 21:47:02 by valerio          ###   ########.fr       */
+/*   Updated: 2024/10/25 15:30:37 by valerio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-int	encode_rgb(byte red, byte green, byte blue) //bitwise operation to get the color value in hexadecimale (nella pratica usare define)
+//bitwise operation to get the color value in hexadecimale (nella pratica usare define)
+int	create_rgb(int r, int g, int b)
 {
-    return (red << 16 | green << 8 | blue);
+	return (r << 16 | g << 8 | b);
+}
+
+int	get_r(int rgb)
+{
+	return ((rgb >> 16) & 0xFF);
+}
+
+int	get_g(int rgb)
+{
+	return ((rgb >> 8) & 0xFF);
+}
+
+int	get_b(int rgb)
+{
+	return (rgb & 0xFF);
 }
 
 void my_pixel_put(t_img *img, int x, int y, int color)
@@ -166,4 +182,47 @@ char	*ft_itoa(int n) // DA AGGIUNGERE CON LIBFT INVECE CHE METTERLO QUI
 	}
 	s[numlen] = '\0';
 	return (ft_reverse(ft_aux(long_n, s, 0)));
+}
+
+void draw_image(t_data *data, int r, int g , int b)
+{
+	for (int i = 0; i < WIDTH; i++)
+		for (int j = 0; j < WIDTH; j++)
+			my_pixel_put(&data->img_new, i, j, create_rgb(r, g, b));
+}
+
+int blend_image(t_data *data)
+{
+	int		r_old, g_old, b_old, r_new, g_new, b_new;
+	int		color;
+	int		offset;
+	int		pixel;
+	
+	if (data->alpha <= 1)
+		for (int i = 0; i < HEIGHT; i++)
+		{
+			for (int j = 0; j < WIDTH; j++)
+			{
+				offset = (j * data->img_new.line_len) + (i * (data->img_new.bpp / 8));
+				
+				pixel = *((unsigned int *)(data->img_old.pixels + offset));
+				r_old = get_r(pixel);
+				g_old = get_g(pixel);
+				b_old = get_b(pixel);
+				
+				pixel = *((unsigned int *)(data->img_new.pixels + offset));
+				r_new = get_r(pixel);
+				g_new = get_g(pixel);
+				b_new = get_b(pixel);
+				
+				color = create_rgb(r_new * data->alpha + r_old * (1 - data->alpha), g_new * data->alpha + g_old * (1 - data->alpha),
+									b_new * data->alpha + b_old * (1 - data->alpha));
+				my_pixel_put(&data->img_old, i, j, color);
+			}
+		}
+	if (data->alpha <= 0.5)
+		data->alpha += 0.005;
+	usleep(10000);
+	mlx_put_image_to_window(data->mlx, data->win, data->img_old.img, 0, 0);
+	return 0;
 }
