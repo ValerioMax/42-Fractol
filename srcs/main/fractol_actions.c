@@ -6,7 +6,7 @@
 /*   By: valerio <valerio@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 22:48:48 by valerio           #+#    #+#             */
-/*   Updated: 2024/10/25 17:39:31 by valerio          ###   ########.fr       */
+/*   Updated: 2024/10/25 19:05:06 by valerio          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int mouse_click_handler(int button, int x, int y, t_data *data)
 	{
 		data->xc = data->xmin + ((data->xmax - data->xmin) / WIDTH) * x;
 		data->yc = data->ymin + ((data->ymax - data->ymin) / HEIGHT) * y;
-		get_fractal(data);
 	}
 	if (button == 3) // Si sposta e fa zoom nel punto cliccato
 	{
@@ -65,21 +64,18 @@ int mouse_click_handler(int button, int x, int y, t_data *data)
 		data->yc = data->ymin + ((data->ymax - data->ymin) / HEIGHT) * y;
 		data->semiax *= 0.75;
 		data->k *= 0.75;
-		get_fractal(data);
 	}
 	if (button == 4) // fa zoom
 	{
 		data->semiax *= 0.95;
 		data->k *= 0.75;
-		get_fractal(data);
 	}
 	if (button == 5) // fa dezoom
 	{
 		data->semiax *= 1.25;
 		data->k *= 1.25;
-		get_fractal(data);
 	}
-	if (button == 2) // mette a schermo il numero di iterazioni del punto cliccato
+	if (button == 2) // mette a schermo il numero di iterazioni del punto cliccato (da rivedere)
 	{
 		double cx = data->xmin + ((data->xmax - data->xmin) / WIDTH) * x;
 		double cy = data->ymin + ((data->ymax - data->ymin) / HEIGHT) * y;
@@ -91,6 +87,7 @@ int mouse_click_handler(int button, int x, int y, t_data *data)
 	}
 	
 	data->alpha = 0;
+	get_fractal(data);
 	if (!data->blending) // renderizza se non è attivo il blending (che renderizza di suo)
 		mlx_put_image_to_window(data->mlx, data->win, data->img_new.img, 0, 0);
 	//put on screen HUD (sopra il frame renderizzato)
